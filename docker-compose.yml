@@ -1,12 +1,9 @@
-version: '3.8'
+version: '3.1'
 
 services:
-  # MySQL database container
+  # MySQL/MariaDB database container
   database:
-    image: mysql:5.7
-    restart: always
-    ports:
-      - "3306:3306"
+    image: mariadb:latest
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: wordpress_db
@@ -18,7 +15,6 @@ services:
   # First WordPress container
   wordpress1:
     image: wordpress:latest
-    restart: always
     depends_on:
       - database
     environment:
@@ -32,7 +28,6 @@ services:
   # Second WordPress container
   wordpress2:
     image: wordpress:latest
-    restart: always
     depends_on:
       - database
     environment:
