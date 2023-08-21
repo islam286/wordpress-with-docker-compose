@@ -1,18 +1,16 @@
-version: '3.1'  
+version: '3.1'
 
 services:
-  # MySQL/MariaDB database container
   database:
     image: mariadb:latest
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: wordpress_db
       MYSQL_USER: wordpress_user
-      MYSQL_PASSWORD: wordpress_password
+      MYSQL_PASSWORD: ${MYSQL_DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
 
-  # Single WordPress service with replicas
   wordpress:
     image: wordpress:latest
     depends_on:
@@ -21,14 +19,13 @@ services:
       WORDPRESS_DB_HOST: database
       WORDPRESS_DB_NAME: wordpress_db
       WORDPRESS_DB_USER: wordpress_user
-      WORDPRESS_DB_PASSWORD: wordpress_password
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     volumes:
       - wp_data:/var/www/html
     deploy:
       mode: replicated
-      replicas: 2  # You can adjust the number of replicas as needed
+      replicas: 2
 
-  # Nginx load balancer container
   nginx:
     image: nginx:latest
     ports:
